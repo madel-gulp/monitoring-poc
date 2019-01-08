@@ -1,0 +1,41 @@
+groups:
+- name: recording_rules
+  interval: 5s
+  rules:
+    - record: node_exporter:node_filesystem_free:fs_used_percents
+      expr: 100 - 100 * ( node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} )
+
+- name: hostStatsAlert
+  rules:
+  - alert: hostCpuUsageAlert
+    expr: sum(avg without (cpu)(irate(node_cpu_seconds_total{mode!='idle'}[5m]))) by (instance) > 0.85
+    for: 1m
+    labels:
+      severity: CRITICAL
+    annotations:
+      summary: "Instance {{ $labels.instance }} CPU usgae high"
+      description: "{{ $labels.instance }} CPU usage above 85% (current value: {{ $value }})"
+  - alert: hostMemUsageAlert
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes)/node_memory_MemTotal_bytes > 0.85
+    for: 1m
+    labels:
+      severity: CRITICAL
+    annotations:
+      summary: "Instance {{ $labels.instance }} MEM usgae high"
+      description: "{{ $labels.instance }} MEM usage above 85% (current value: {{ $value }})"
+
+  - alert: LoadAverage5m
+    expr: node_load5 >= 5.0
+    labels:
+      severity: CRITICAL
+    annotations:
+      summary: "Instance {{ $labels.instance }} - high load average"
+      description: "{{ $labels.instance  }} (measured by {{ $labels.job }}) has high load average ({{ $value }}) over 5 minutes."
+
+  - alert: DiskSpace10%Free
+    expr: node_exporter:node_filesystem_free:fs_used_percents >= 90
+    labels:
+      severity: CRITICAL
+    annotations:
+      summary: "Instance {{ $labels.instance }} is low on disk space"
+      description: "{{ $labels.instance }} has only {{ $value }}% free."
