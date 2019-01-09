@@ -10,7 +10,7 @@
     Restart Supervisor
 
 - name: Add Node Exporter Config for Supervisor
-  copy: src=node_exporter dest=/usr/local/bin/node_exporter
+  copy: src=node_exporter dest=/usr/local/bin/node_exporter mode=0755
   notify:
       - Restart Supervisor
 
