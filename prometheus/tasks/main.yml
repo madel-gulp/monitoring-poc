@@ -8,6 +8,9 @@
     - prometheus-pushgateway
     - prometheus-alertmanager
 
+- name: Remove The Old node_exporter
+  apt: pkg=prometheus-node-exporter state=absent update_cache=true
+
 - name: Add Prometheus Config
   template: src=prometheus.yml dest=/etc/prometheus/prometheus.yml
   notify:
