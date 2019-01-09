@@ -1,2 +1,20 @@
 ---
 # tasks file for node-exporter
+
+- name: Install Deps.
+  apt: pkg={{ item }} state=present update_cache=true
+  with_items:
+    - wget
+    - supervisor
+  notify:
+    Restart Supervisor
+
+- name: Add Node Exporter Config for Supervisor
+  copy: src=node_exporter dest=/usr/local/bin/node_exporter
+  notify:
+      - Restart Supervisor
+
+- name: Add Node Exporter Config for Supervisor
+  copy: src=node_exporter.conf dest=/etc/supervisor/conf.d/node_exporter.conf
+  notify:
+      - Restart Supervisor
