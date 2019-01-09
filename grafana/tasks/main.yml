@@ -1,10 +1,13 @@
 ---
 # tasks file for grafana
 
+- name: Install Deps.
+  apt: pkg=apt-transport-https state=present
+
 - name: Add Grafana repo
-    apt_repository:
-      repo: deb https://packages.grafana.com/oss/deb stable main
-      state: present
+  apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    state: present
 
 - name: Add Grafana repo key
   apt_key:
@@ -12,12 +15,10 @@
     state: present
 
 - name: Install Grafana
-  apt: pkg={{ item }} state=present update_cache=true
-  with_items:
-    - grafana
+  apt: pkg=grafana state=present update_cache=true
   notify:
     - Restart Grafana
 
 - name: Enable Grafana
-  service: name=grafana-server state=enabled
+  service: name=grafana-server enabled=yes
 
