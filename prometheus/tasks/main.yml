@@ -2,7 +2,7 @@
 # tasks file for prometheus
 
 - name: Install Prometheus Components
-  apt: pkg={{ item }} state=installed update_cache=true
+  apt: pkg={{ item }} state=present update_cache=true
   with_items:
     - prometheus
     - prometheus-pushgateway
@@ -20,7 +20,7 @@
       - Restart Prometheus
 
 - name: Add Alert Manager Rules
-  template: src=hoststats-alert.rules dest=/etc/prometheus/rules/hoststats-alert.rules
+  copy: src=hoststats-alert.rules dest=/etc/prometheus/hoststats-alert.rules
   notify:
       - Restart Alert Manager
       - Restart Prometheus

@@ -5,4 +5,4 @@
   service: name=prometheus state=restarted
 
 - name: Restart Alert Manager
-  service: name=prometheus-alert-manager state=restarted
+  service: name=prometheus-alertmanager state=restarted
