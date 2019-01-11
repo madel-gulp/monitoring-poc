@@ -33,3 +33,17 @@
 
 - name: Enable Alertmanager
   service: name=prometheus-alertmanager enabled=yes
+
+- name: Add Basic HTTP Auth (Docker) 
+  docker_container:
+    name: web
+    image: beevelop/nginx-basic-auth
+    state: started
+    links:
+     - "web:localhost"
+       #    network_mode: host
+    ports:
+    - "3000:9090"
+    env:
+      HTPASSWD: 'admin:$apr1$s7iMankP$Pc4ZpHtrYkhZlYy8oHzN/1'
+      FORWARD_PORT: 3000
