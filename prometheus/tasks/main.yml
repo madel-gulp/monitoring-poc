@@ -46,10 +46,8 @@
     image: beevelop/nginx-basic-auth
     state: started
     network_mode: host
-    ports:
-      - "3000:80"
     volumes:
             - /srv/hosts:/etc/hosts
     env:
-      HTPASSWD: 'admin:$apr1$s7iMankP$Pc4ZpHtrYkhZlYy8oHzN/1'
+      HTPASSWD: 'admin:$apr1$7BbFpIy7$hgxAEYH6W3C1YCc3BoYwM1'
       FORWARD_PORT: 9090
