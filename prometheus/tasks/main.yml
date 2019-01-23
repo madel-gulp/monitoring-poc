@@ -34,7 +34,12 @@
 - name: Enable Alertmanager
   service: name=prometheus-alertmanager enabled=yes
 
-- lineinfile:
+- name: Install docker-py (pip)
+  pip:
+    name: docker-py
+
+- name: Adding hosts file for docker (Used for HTTP AUTH)
+  lineinfile:
     path: /srv/hosts
     state: present
     line: '127.0.0.1    web'
