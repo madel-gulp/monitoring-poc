@@ -9,7 +9,7 @@
   notify:
     Restart Supervisor
 
-- name: Add Node Exporter Config for Supervisor
+- name: Add Node Exporter Executable
   copy: src=node_exporter dest=/usr/local/bin/node_exporter mode=0755
   notify:
       - Restart Supervisor
